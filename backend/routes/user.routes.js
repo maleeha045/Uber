@@ -10,6 +10,8 @@ router.post("/register",[
     body("email").isEmail().withMessage("Valid email is required"),
 
 ],createUser)
-router.post("/login",loginUser)
+router.post("/login",[
+        body("email").isEmail().withMessage("Valid email is required"),
+],loginUser)
 
 export default router;

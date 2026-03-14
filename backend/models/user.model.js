@@ -24,8 +24,8 @@ const userSchema = new mongoose.Schema({
 userSchema.statics.hashPassword = async function(password) {
     return await bcrypt.hash(password,10);
 }
-userSchema.statics.comparePassword = async function(password){
-    return await bcrypt.compare(password,this.password);
+userSchema.statics.comparePassword = async function(password,hashPassword){
+    return bcrypt.compare(password,hashPassword);
 }
 userSchema.statics.generateToken = async function(user){
     const token = jwt.sign({id:user._id},process.env.JWT_SECRET);

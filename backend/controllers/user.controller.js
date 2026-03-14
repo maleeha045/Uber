@@ -30,10 +30,25 @@ export const createUser = async (req, res) => {
 };
 export const loginUser = async (req, res) => {
     try {
+        
         const { email, password } = req.body;
         if(!email || !password){
             throw new Error("All fields are required");
         }
+        
+     
+     const user = await UserModel.findOne({ email })
+            
+        if (!user) {
+            return res.status(400).json({ error: "User don't exist" });
+        }
+       console.log(req.body)
+        const isMatch = await UserModel.comparePassword(password,user.password);
+        if (!isMatch) {
+            return res.status(400).json({ error: "Invalid credentials" });
+        }
+        const token = await UserModel.generateToken(user);
+        res.status(200).json({ user, token });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
