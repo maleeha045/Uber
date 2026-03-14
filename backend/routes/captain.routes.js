@@ -1,4 +1,4 @@
-import {createCaptain} from "../controllers/captain.controller.js";
+import {createCaptain,loginCaptain} from "../controllers/captain.controller.js";
 import { body } from 'express-validator';
 
 import {Router} from 'express';
@@ -16,5 +16,5 @@ router.post("/register",[
 ],createCaptain)
 
 
-
+router.post("/login",loginCaptain)
 export default router;

@@ -1,6 +1,7 @@
 import CaptainModel from "../models/captain.model.js";
 import { validationResult } from 'express-validator';
 
+//register
 export const createCaptain = async (req, res) => {
     try {
          const errors = validationResult(req);
@@ -29,3 +30,26 @@ export const createCaptain = async (req, res) => {
     }
 }
 
+//login
+export const loginCaptain = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ message: "Email and password are required" });
+        }
+        const captain = await CaptainModel.findOne({ email });
+        if (!captain) {
+            return res.status(400).json({ message: "User don't exist" });
+        }
+        
+        const isMatch = await CaptainModel.comparePassword(password, captain.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "password incorrect" });
+        }
+        const token = await CaptainModel.generateToken(captain);
+        res.cookie("token", token);
+        res.status(200).json({ captain, token });
+    } catch (error) {
+        res.status(500).json({ message: "Error logging in captain", error });
+    }
+};
