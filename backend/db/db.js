@@ -1,0 +1,11 @@
+import mongoose from "mongoose";
+
+function connectDB(){
+mongoose.connect(`${process.env.MONGODB_URI}/uber-login`).then(()=>{
+    console.log("Connected to MongoDB")
+}).catch((err)=>{
+    console.log("Error connecting to MongoDB", err)
+})
+}
+
+export default connectDB
