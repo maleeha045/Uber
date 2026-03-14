@@ -28,7 +28,7 @@ userSchema.statics.comparePassword = async function(password,hashPassword){
     return bcrypt.compare(password,hashPassword);
 }
 userSchema.statics.generateToken = async function(user){
-    const token = jwt.sign({id:user._id},process.env.JWT_SECRET);
+    const token = jwt.sign({id:user._id},process.env.JWT_SECRET,{expiresIn:"1d"});
     return token
 
 }
