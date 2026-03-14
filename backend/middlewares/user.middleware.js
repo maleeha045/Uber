@@ -10,10 +10,10 @@ const authMiddleware = async (req,res,next)=>{
         if (!token) {
             return res.status(401).json({ error: "Access denied." });
         }
-        console.log(token)
+
 
         const isBlacklisted = await BlacklistUserTokenModel.findOne({ token });
-console.log(isBlacklisted)
+
         if(isBlacklisted){
             return res.status(401).json({ error: "Token is blacklisted. Please log in again." })
         }

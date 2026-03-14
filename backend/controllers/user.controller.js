@@ -43,7 +43,7 @@ export const loginUser = async (req, res) => {
         if (!user) {
             return res.status(400).json({ error: "User don't exist" });
         }
-       console.log(req.body)
+
         const isMatch = await UserModel.comparePassword(password,user.password);
         if (!isMatch) {
             return res.status(400).json({ error: "Invalid credentials" });
@@ -72,7 +72,6 @@ export const logoutUser = async (req, res) => {
         if (token) {
             await BlacklistUserTokenModel.create({ token });
         }
-        console.log(token)
 
         res.clearCookie("token");
 
