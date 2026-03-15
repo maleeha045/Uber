@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt"
+
 import jwt from "jsonwebtoken"
 import UserModel from "../models/user.model.js"
 import BlacklistUserTokenModel from '../models/blacklistUserToken.model.js';
@@ -11,11 +11,10 @@ const authMiddleware = async (req,res,next)=>{
             return res.status(401).json({ error: "Access denied." });
         }
 
-
         const isBlacklisted = await BlacklistUserTokenModel.findOne({ token });
 
         if(isBlacklisted){
-            return res.status(401).json({ error: "Token is blacklisted. Please log in again." })
+            return res.status(401).json({ error: "Please log in again." })
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);

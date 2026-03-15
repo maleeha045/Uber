@@ -1,5 +1,6 @@
 import CaptainModel from "../models/captain.model.js";
 import { validationResult } from 'express-validator';
+import BlacklistCaptainTokenModel from '../models/blacklistCaptainTokenModel.model.js';
 
 //register
 export const createCaptain = async (req, res) => {
@@ -51,5 +52,28 @@ export const loginCaptain = async (req, res) => {
         res.status(200).json({ captain, token });
     } catch (error) {
         res.status(500).json({ message: "Error logging in captain", error });
+    }
+};
+
+//getprofile
+export const getProfileCaptain = async (req, res) => {
+    try {
+       
+        res.status(200).json(req.user);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching captain profile", error });
+    }
+};
+
+export const logoutCaptain = async (req, res) => {
+    try {
+        const token = req.cookies.token;
+        if (token) {
+            await BlacklistCaptainTokenModel.create({ token });
+        }
+        res.clearCookie("token");
+        res.status(200).json({ message: "Logged out successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Error logging out captain", error });
     }
 };
